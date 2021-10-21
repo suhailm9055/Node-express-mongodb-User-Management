@@ -1,0 +1,59 @@
+
+<header class="p-3 bg-dark text-white fixed-top">
+    <div class="">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/" class="nav-link px-2 text-white">Home</a></li>
+          <li><a href="/table" class="nav-link px-2 text-white">Table</a></li>
+          <li><a href="/list" class="nav-link px-2 text-white">Lists</a></li>
+          <li><a href="/card" class="nav-link px-2 text-secondary">Card</a></li>
+          
+        </ul>
+
+<span class"text-secondary text-center">Hi,{{user}}</span>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          
+        </form>
+
+        <div class="text-end">
+         
+          <a type="button" class="btn btn-outline-danger" href="/logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+   
+  </header>
+  <div class="bg-dark text-secondary  px-4 py-5" style="min-height: 80vh; margin-top:150px ;">
+
+  
+ 
+     
+    
+      <div class="row row-cols-1  col-12 row-cols-md-4 g-4 p-2 ">
+           {{#each personsarr}}
+  <div class="col m-auto text-center mb-2">
+      
+    <div class="card p-2 mb-4" style="border-radius: 30px;background-color:#252627">
+      <img src="{{this.img}}" class="card-img-top  m-auto" style="width: 60%;height: inherit;border-radius: 10px" alt="...">
+      <div class="card-body">
+        <h5 class="card-title text-white">{{this.name}}</h5>
+        <p class="card-text text-white">{{this.sname}},{{this.year}}</p>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Last updated 3 mins ago</small>
+      </div>
+    </div>
+     
+  </div>
+  {{/each}}
+  
+</div>
+   
+
+
+</div>

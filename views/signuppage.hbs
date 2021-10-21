@@ -1,0 +1,50 @@
+<div>
+<div class="py-5 imgdiv " style="height: 100vh;">
+  <div class="container">
+    <div class="row">
+      <div class="col-11 col-sm-11 col-md-7 col-lg-5 m-auto ">
+        <form
+        id="contact-form"
+          action="/signup"
+          method="post"
+          role="form"
+          enctype="application/x-www-form-urlencoded"
+        >
+          
+          
+          <legend class="primary text-success my-4">Please Sign Up Here</legend>
+
+          <div class="form-group my-4">
+            <label class="text-white" for="first_name">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              name="UserName"
+              id="first_name"
+              placeholder="First Name"
+              
+            />
+          </div>
+
+          <div class="form-group my-4">
+            <label class="text-white" for="pw">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              name="pw"
+              id="pw"
+             
+            />
+          </div>
+          <div><button type="submit" class="btn btn-success my-4 col-12">Sign Up</button></div>
+
+          <div>
+              <label class="text-white" for="first_name">Already a User</label>
+<a href="/login"><button type="button" class="btn btn-primary my-4 col-12">Log In Here</button></a>
+</div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

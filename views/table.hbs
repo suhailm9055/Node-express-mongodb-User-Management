@@ -1,0 +1,62 @@
+
+<header class="p-3 bg-dark text-white fixed-top">
+    <div class="">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/admin" class="nav-link px-2 text-white">Home</a></li>
+          <li><a href="/admin/users" class="nav-link px-2 text-secondary">Users</a></li>
+          <li><a href="/admin/adduser" class="nav-link px-2 text-white">Add Users</a></li>
+          {{!-- <li><a href="/card" class="nav-link px-2 text-white">Card</a></li> --}}
+          
+        </ul>
+
+<span class"text-secondary text-center">Hi,{{user}}</span>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          
+        </form>
+
+        <div class="text-end">
+         
+          <a type="button" class="btn btn-outline-danger" href="/logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+   
+  </header>
+ 
+<div class="bg-dark text-secondary  px-4 py-5" style="min-height: 90vh; margin-top:150px ;">
+
+<table class="table col-lg-7 bg-secondary m-auto">
+  <thead>
+    <tr>
+     
+      <th scope="col">User Name</th>
+      <th scope="col">password</th>
+       <th scope="col">Update details</th>
+      <th scope="col">Block user</th>
+      <th scope="col">Delete user</th>
+    </tr>
+  </thead>
+   <tbody>
+ {{#each users}}
+    <tr>
+      <td>{{this.UserName}}</td>
+      <td>{{this.pw}}</td>
+      <td><a href="/admin/updateuser"><button class="btn btn-primary">Update </button></a></td>
+      <td><a href=""><button class="btn btn-warning">Block </button></a></td>
+      <td><a href=""><button class="btn btn-danger">Delete </button></a></td>
+    </tr>
+    </tbody>
+    {{/each}}
+</table>
+<div class="text-center">
+    <a type="button" class=" mt-4 btn btn-primary btn-lg px-4" href="/admin/adduser">Add New Users</a>
+    </div>
+</div>
+
+ 

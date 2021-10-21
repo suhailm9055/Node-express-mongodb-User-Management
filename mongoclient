@@ -1,0 +1,7 @@
+  // MongoClient.connect('mongodb://localhost:27017',(err,client)=>{
+  //   if(err){
+  //     console.log('error');
+  //   }else{
+  //    client.db('suhail').collection('user').insertOne(req.body)
+  //   }
+  // })
