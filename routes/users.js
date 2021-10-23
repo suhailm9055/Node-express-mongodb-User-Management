@@ -4,10 +4,9 @@ var router = express.Router();
 var mongoClient = require("mongodb").MongoClient;
 const { response } = require("express");
 
-
 var signOut = false;
 var logsuccess = false;
-
+var Userexisterr = false;
 var dbhelp = require("../DBhelper/signuphelper");
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
@@ -60,9 +59,9 @@ router.get("/login", varifyuser, function (req, res, next) {
     LoginErr: req.session.loginErr,
     logout: signOut,
   });
-  console.log("loginerrorbfor"+req.session.loginErr);
+  console.log("loginerrorbfor" + req.session.loginErr);
   req.session.loginErr = false;
-  console.log("loginerrorafter"+req.session.loginErr);
+  console.log("loginerrorafter" + req.session.loginErr);
   signOut = false;
   console.log(req.session.signupedin + "req.session.signupedin");
 });
@@ -81,16 +80,24 @@ router.get("/signuppage", varifyuser, (req, res, next) => {
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
   );
-  res.render("signuppage");
+
+  res.render("signuppage", { Userexisterr });
+  Userexisterr = false;
 });
 
 /*POST signup page. */
 router.post("/signup", (req, res, next) => {
-  req.session.signupedin = true;
   req.session.userid = req.body.UserName;
-  dbhelp.signUp(req.body);
+  dbhelp.signUp(req.body).then((response) => {
+    if (response.Userexist) {
+      Userexisterr = response.Userexist;
 
-  res.redirect("/");
+      res.redirect("/signuppage");
+    } else {
+      req.session.signupedin = true;
+      res.redirect("/");
+    }
+  });
 });
 
 /* get logout page. */

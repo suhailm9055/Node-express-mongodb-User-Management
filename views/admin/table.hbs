@@ -1,0 +1,92 @@
+
+<header class="p-3 headercol-md headercol-sm bg-dark text-white fixed-top">
+    <div class="headercol-md">
+      <div class="d-flex flex-wrap headercol-md align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+
+        <ul class="nav  col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="/admin" class="nav-link px-2 text-white">Home</a></li>
+          <li><a href="/admin/users" class="nav-link px-2 text-secondary">Users</a></li>
+          <li><a href="/admin/adduser" class="nav-link px-2 text-white">Add Users</a></li>
+          {{!-- <li><a href="/card" class="nav-link px-2 text-white">Card</a></li> --}}
+          
+        </ul>
+
+<span class"text-secondary text-center headercol-md">Hi,<strong>Admin </strong></span>
+
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          
+        </form>
+
+        <div class="text-end">
+         
+          <a type="button" class="btn logoutBTN btn-outline-danger" href="/logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+   
+  </header>
+ 
+<section class="mt-5 pt-5 ">
+    <div class="container-fluid col-12 col-lg-10 col-md-11">
+        <div class="row mt-4">
+        </div>
+        <table class="table table-striped table-bordered css-serial " id="users-Table">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                   
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td></td>
+                   
+                    <td>{{this.UserName}}</td>
+                 <td>{{this.pw}}</td>
+                    
+                    <td><a href="/admin/updateuser/{{this._id}}" class="btn btn-primary">Edit</a></td>
+                    <td><a href="/admin/deleteuser/{{this._id}}" class="btn btn-danger" onclick="return confirm('Are you want to delete {{this.Name}}')">Delete</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+             <div class="text-center mb-4">
+    <a type="button" class="addbtn mt-auto btn btn-success px-4" href="/admin/adduser">Add New Users</a>
+    </div>
+        </table>
+       
+    </div>
+</section>
+
+
+</div>
+
+
+<script>
+        $(document).ready(function() {
+            $('#users-Table').DataTable();
+        });
+</script>
+ 
+ <style>
+
+    body {
+        background-color: #474f5580;
+        }
+    .css-serial {
+        counter-reset: serial-number;
+        }
+
+    .css-serial td:first-child:before {
+    counter-increment: serial-number;
+    content: counter(serial-number);
+    }
+</style>

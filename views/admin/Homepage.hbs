@@ -1,52 +1,91 @@
-
 <header class="p-4 bg-dark text-white fixed-top">
-    <div class="">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-        </a>
+  <div class="">
+    <div
+      class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+    >
+      <a
+        href="/"
+        class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
+      >
+        <svg
+          class="bi me-2"
+          width="40"
+          height="32"
+          role="img"
+          aria-label="Bootstrap"
+        ><use xlink:href="#bootstrap"></use></svg>
+      </a>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 ">
-          <li><a href="/admin" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="/admin/users" class="nav-link px-2 text-white">Users</a></li>
-            <li><a href="/admin/adduser" class="nav-link px-2 text-white">Add Users</a></li>
-          {{!-- <li><a href="/card" class="nav-link px-2 text-white">Card</a></li>  --}}
-          
-        </ul>
-{{#if adminlogsuccess}}
-          
-            <div class="alert alert-success alert-dismissible fade show   m-auto  col-5 col-lg-4 mb-3 mb-lg-0 me-lg-3 sticky-top position-absolute " style="top: 0;left:31%" role="alert">
-   You Have Logged In <strong>Successfully</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-          {{/if}}
-<span class="text-white text-center p-1 col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 mt-2">Hi,<strong>Admin</strong></span>
+      <ul
+        class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
+      >
+        <li><a href="/admin" class="nav-link px-2 text-secondary">Home</a></li>
+        <li><a
+            href="/admin/users"
+            class="nav-link px-2 text-white"
+          >Users</a></li>
+        <li><a href="/admin/adduser" class="nav-link px-2 text-white">Add Users</a></li>
+        {{! <li><a href="/card" class="nav-link px-2 text-white">Card</a></li>  }}
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-          
-        </form>
+      </ul>
+      {{#if adminlogsuccess}}
 
-        <div class="text-end ">
-         
-          <a type="button" class="btn btn-outline-danger " href="/admin/logout">Log Out</a>
+        <div
+          class="alert alert-success alert-dismissible fade show m-auto col-5 col-lg-4 mb-3 mb-lg-0 me-lg-3 sticky-top position-absolute"
+          style="top: 0;left:31%"
+          role="alert"
+        >
+          You Have Logged In
+          <strong>Successfully</strong>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+      {{/if}}
+      <span
+        class="text-white text-center p-1 col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 mt-2"
+      >Hi,<strong>Admin</strong></span>
+
+      <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+
+      </form>
+
+      <div class="text-end">
+
+        <a type="button" class="btn btn-outline-danger" href="/admin/logout">Log
+          Out</a>
       </div>
     </div>
-   
-  </header>
-  <div>
- <div class="bg-dark text-secondary px-4 py-5 text-center " style="min-height: 88vh;margin-top: 150px;">
+  </div>
+
+</header>
+<div>
+  <div
+    class="bg-dark text-secondary px-4 py-5 text-center"
+    style="min-height: 88vh;margin-top: 150px;"
+  >
     <div class="py-5">
       <h1 class="display-5 fw-bold text-white">Welcome To Admin Panel</h1>
       <div class="col-lg-6 mx-auto">
-       
+
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-          <a type="button" class="btn btn-outline-light btn-lg px-4" href="/admin/users">Manage Users</a>
-           <a type="button" class="btn btn-outline-light btn-lg px-4" href="/admin/adduser">Add Users</a>
+          <a
+            type="button"
+            class="btn btn-outline-light btn-lg px-4"
+            href="/admin/users"
+          >Manage Users</a>
+          <a
+            type="button"
+            class="btn btn-outline-light btn-lg px-4"
+            href="/admin/adduser"
+          >Add Users</a>
         </div>
       </div>
     </div>
   </div>
-  </div>
+</div>

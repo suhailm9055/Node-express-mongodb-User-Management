@@ -3,6 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="col-11 col-sm-11 col-md-7 col-lg-5 m-auto ">
+
         <form
         id="contact-form"
           action="/signup"
@@ -11,7 +12,14 @@
           enctype="application/x-www-form-urlencoded"
         >
           
-          
+          {{#if   Userexisterr}}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+   Username Already <strong>Exist</strong>  <br><br> Please Do Login
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+          {{/if}}
           <legend class="primary text-success my-4">Please Sign Up Here</legend>
 
           <div class="form-group my-4">
@@ -39,7 +47,7 @@
           <div><button type="submit" class="btn btn-success my-4 col-12">Sign Up</button></div>
 
           <div>
-              <label class="text-white" for="first_name">Already a User</label>
+              <label class="text-white" for="first_name"><a href="/login">Already a User</a></label>
 <a href="/login"><button type="button" class="btn btn-primary my-4 col-12">Log In Here</button></a>
 </div>
         </form>
