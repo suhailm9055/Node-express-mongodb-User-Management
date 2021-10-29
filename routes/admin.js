@@ -141,48 +141,5 @@ router.get("/deleteuser/:id", (req, res, next) => {
   });
 });
 
-// /* get card page. */
-// router.get("/card", verifyLogin, function (req, res, next) {
-//   const personsarr = {
-//     person1: {
-//       img: "/images/batman.jpg",
-//       name: "Dark Knigth",
-//       sname: "Batman",
-//       year: 2008,
-//       color: "black",
-//     },
-//     person2: {
-//       img: "/images/inception.jpg",
-//       name: "Chris",
-//       sname: "Nolan",
-//       year: 2010,
-//       color: "red",
-//     },
-//     person3: {
-//       img: "/images/tenet.jpg",
-//       name: "Tenet",
-//       sname: "Doe",
-//       year: 2020,
-//       color: "blue",
-//     },
-//   };
-
-//   res.render("card", { personsarr, user });
-// });
-// /* get table page. */
-// router.get("/table", verifyLogin, function (req, res, next) {
-//   const personsarr = [
-//     {
-//       firstName: "Dark Knight",
-//       lastName: "Batman",
-//       age: 2008,
-//       eyeColor: "black",
-//     },
-//     { firstName: "Chris", lastName: "Nolan", age: 2010, eyeColor: "red" },
-//     { firstName: "Tenet", lastName: "Doe", age: 2020, eyeColor: "green" },
-//   ];
-
-//   res.render("table", { personsarr, user });
-// });
 
 module.exports = router;
