@@ -20,10 +20,19 @@
   </button>
 </div>
           {{/if}}
+          {{#if   pwerr1}}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+   Password <strong>doesNOT Match</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+          {{/if}}
           <legend class="primary text-success my-4">Please Sign Up Here</legend>
 
-          <div class="form-group my-4">
-            <label class="text-white" for="first_name">Username</label>
+          <div class="form-row d-flex justify-content-center">
+            <div class="col-lg-10 py-3 text-center">
+              <label class="text-white " for="first_name">Username</label>
             <input
               type="text"
               class="form-control"
@@ -32,24 +41,61 @@
               placeholder="First Name"
               
             />
+            </div>
+            
           </div>
 
-          <div class="form-group my-4">
+         
+          <div class="form-row d-flex justify-content-center">
+             
+          <div class="col-lg-10 py-3 text-center">
+            <label class="text-white" for="email">E-mail</label>
+            <input
+              type="text"
+              name="email"
+              placeholder="Email"
+              class="form-control"
+              id=""
+            />
+          </div>
+        </div>
+ <div class="form-row d-flex justify-content-center">
+            <div class="col-lg-10 py-3 text-center">
             <label class="text-white" for="pw">Password</label>
             <input
               type="password"
               class="form-control"
               name="pw"
               id="pw"
-             
+              placeholder="Password"
             />
           </div>
-          <div><button type="submit" class="btn btn-success my-4 col-12">Sign Up</button></div>
+          </div>
+ <div class="form-row d-flex justify-content-center">
+          <div class="col-lg-10 py-3 text-center">
+             <label class="text-white" for="pw">Confirm Password</label>
+            <input
+            id="cpassword"
+              type="password"
+               name="cpw"
+              placeholder="Confirm Password"
+              class="form-control"
+            />
+          </div>
+        </div>
 
-          <div>
-              <label class="text-white" for="first_name"><a href="/login">Already a User</a></label>
-<a href="/login"><button type="button" class="btn btn-primary my-4 col-12">Log In Here</button></a>
+        <div class="form-row d-flex justify-content-center ">
+          <div class="col-lg-10"><button type="submit" class="btn btn-success my-4 col-12 ">Sign Up</button></div>
+        </div>
+         <div class="form-row d-flex justify-content-center">
+         <label class="text-white text-lg" for="first_name"><a href="/login">Already a User</a></label>
+         <div class="col-lg-10 py-3  text-center">
+              
+              <a href="/login"><button type="button" class=" btn btn-primary   col-12 ">Log In Here</button></a>
 </div>
+</div>
+</div>
+
         </form>
 
       </div>

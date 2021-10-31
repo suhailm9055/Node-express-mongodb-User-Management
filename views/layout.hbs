@@ -71,7 +71,7 @@
     <script>
       $(document).ready(function(){ $("#contact-form").validate({ rules:{
       UserName:{ required:true, minlength:3 }, pw:{ required:true }, adminPw:{
-      required:true }, adminName:{ required:true, minlength:3 } } }) })
+      required:true }, adminName:{ required:true, minlength:3 },email:{required:true,email:true} } }) })
     </script>
     <style>
       .error{ margin-top: 10px; color: red; }

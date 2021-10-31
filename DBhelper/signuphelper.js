@@ -135,6 +135,7 @@ module.exports = {
             $set: {
               UserName: userDetails.UserName,
               pw: userDetails.pw,
+              email:userDetails.email
             },
           }
         )
@@ -153,4 +154,37 @@ module.exports = {
         });
     });
   },
+
+//   pwch: (username, userDetails) => {
+//   return new Promise(async (resolve, reject) => {
+//     let user = await db
+//     .get()
+//     .collection("users")
+//     .findOne({ UserName:username });
+// console.log(username+"username passchange");
+//     if(userDetails.pw==user.pw){
+//     db.get()
+//       .collection("users")
+      
+//       .updateOne(
+//         { UserName:username },
+//         {
+//           $set: {
+            
+//             pw: userDetails.npw,
+           
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         response.status=true
+//         resolve({status:true});
+//       });
+//     }else{
+//       resolve({status:false});
+//     }
+//     });
+ 
+//   }
+
 };
