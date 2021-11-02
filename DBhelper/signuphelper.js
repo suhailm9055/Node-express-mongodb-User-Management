@@ -1,28 +1,75 @@
 var db = require("../config/connection");
-const { response } = require("express");
-var objectId = require("mongodb").ObjectID;
 const { ObjectID } = require("mongodb");
 module.exports = {
   signUp: (users) => {
     return new Promise(async (resolve, reject) => {
       console.log(users.UserName + "usernM");
-
+      
+      let response={err:{msg:"", status:false}}
+      
       usernew = await db
         .get()
         .collection("users")
-        .findOne({ UserName: users.UserName });
+        .findOne({ UserName: users.UserName }).then((user)=>{
+
+
+          
+        })
 
       if (!usernew) {
-        db.get()
+        
+        // users.bstatus=true;
+        
+        // users.loggedin=true;
+        await db.get()
           .collection("users")
           .insertOne(users)
-          .then((response) => {
-            resolve(response);
-          });
+            await db.get()
+            .collection("users")
+            .updateOne(
+              { UserName: users.UserName },
+              {
+                $set: {
+                  bstatus: true,
+                  loggedin:true
+                },
+              }
+            );
+         await db.get()
+            .collection("users")
+            .updateOne(
+              { UserName: users.UserName },
+              {
+                $unset: {
+                  cpw: 1,
+                },
+              }
+            )
+            .then((response) => {
+              
+              let user=db.get().collection("users").findOne({UserName: users.UserName});
+              resolve(user);
+            });
+          
+       
       } else {
-        response.Userexist = true;
-        resolve({ Userexist: true });
+        response.err.status=true
+                response.err.msg="User already exists"
+                resolve(response)
+      
       }
+    });
+  },
+  chechstatus: (users) => {
+    console.log(users);
+    return new Promise(async (resolve, reject) => {
+      await db
+        .get()
+        .collection("users")
+        .findOne({}, { UserName: users.UserName })
+        .then((response) => {
+          resolve(response);
+        });
     });
   },
 
@@ -37,23 +84,29 @@ module.exports = {
         .findOne({ UserName: usersdata.UserName });
 
       if (user) {
+        response.user = user;
         console.log("Username success" + user.pw);
-        if (usersdata.pw == user.pw) {
-          console.log("Username and pw success" + user.pw);
-          loginstatus = true;
-          response.user = user;
-          response.status = true;
-
-          resolve(response);
+        if (user.bstatus === true) {
+          if (usersdata.pw == user.pw) {
+            response.user = user;
+            response.status = true;
+            resolve(response);
+          } else {
+            console.log("login failed pw error");
+            response.status = false;
+            response.err="login error"
+            resolve(response);
+          }
         } else {
-          console.log("login failed pw error");
-
-          resolve({ status: false });
+          response.bstatus = false;
+          response.err="User Blocked"
+          resolve(response);
         }
       } else {
         console.log("username error");
-
-        resolve({ status: false });
+        response.status = false;
+        response.err='No user Found'
+        resolve(response);
       }
       return loginstatus;
     });
@@ -135,7 +188,7 @@ module.exports = {
             $set: {
               UserName: userDetails.UserName,
               pw: userDetails.pw,
-              email:userDetails.email
+              email: userDetails.email,
             },
           }
         )
@@ -144,47 +197,48 @@ module.exports = {
         });
     });
   },
-  deleteUser: (userid) => {
+  deleteUser: (id) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection("users")
-        .remove({ _id: ObjectID(userid) })
+        .remove({ _id: ObjectID(id) })
         .then((response) => {
           resolve(response);
         });
     });
   },
 
-//   pwch: (username, userDetails) => {
-//   return new Promise(async (resolve, reject) => {
-//     let user = await db
-//     .get()
-//     .collection("users")
-//     .findOne({ UserName:username });
-// console.log(username+"username passchange");
-//     if(userDetails.pw==user.pw){
-//     db.get()
-//       .collection("users")
-      
-//       .updateOne(
-//         { UserName:username },
-//         {
-//           $set: {
-            
-//             pw: userDetails.npw,
-           
-//           },
-//         }
-//       )
-//       .then((response) => {
-//         response.status=true
-//         resolve({status:true});
-//       });
-//     }else{
-//       resolve({status:false});
-//     }
-//     });
- 
-//   }
-
+  blockUser: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection("users")
+        .updateOne({ _id: ObjectID(userId) }, { $set: { bstatus: false } })
+        .then((response) => {
+          console.log(response + "block res");
+          resolve(response);
+        });
+    });
+  },
+  unblockUser: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection("users")
+        .updateOne({ _id: ObjectID(userId) }, { $set: { bstatus: true } })
+        .then((response) => {
+          console.log(response + "block res");
+          resolve(response);
+        });
+    });
+  },
+  logout: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection("users")
+        .updateOne({ _id: ObjectID(userId) }, { $set: { loggedin:false } })
+        .then((response) => {
+          console.log(response + "block res");
+          resolve(response);
+        });
+    });
+  },
 };

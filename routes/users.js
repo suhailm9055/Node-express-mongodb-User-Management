@@ -1,138 +1,121 @@
 var express = require("express");
-
 var router = express.Router();
-var mongoClient = require("mongodb").MongoClient;
-const { response } = require("express");
-
 var signOut = false;
 var logsuccess = false;
 var Userexisterr = false;
-var cpwerr =false
+var cpwerr = false;
 
+const { ObjectId } = require("mongodb");
 var dbhelp = require("../DBhelper/signuphelper");
+
+
+// Verify login middleware
+async function verifyLogin(req, res, next) {
+  res.header(
+    "Cache-Control",
+    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0");
+
+    if(req.session.loggedIn) {
+      
+        
+          next()
+        
+    
+}
+else res.redirect("/login")
+}
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
   user = req.session.userid;
-  var urlf = req.url
-  var url = urlf.split("=");
-  var url1 = url[1];
-  var passchangeseccess=req.session.pwchsuccess
-  console.log(passchangeseccess+"passchangeseccess");
-  res.render("homepage", { user, logsuccess ,url1,passchangeseccess });
+  
+  res.render("homepage", { user, logsuccess});
   logsuccess = false;
+  req.session.signupedin=false
 });
 
-function verifyLogin(req, res, next) {
+
+/* post login page. */
+router.post("/login",  function (req, res, next) {
+  console.log("imhere");
   res.header(
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
   );
-  if (req.session.loggedIn || req.session.signupedin) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-}
-// pass change post
-// router.post("/?variable=pwch:user",verifyLogin,(req,res,next)=>{
-//   dbhelp.pwch(req.body).then((response) => {
-//     if(response.status){
-//      req.session.pwchsuccess=true
-// res.redirect("/");
-//     }else{
-//     req.session.pwchsuccess=false
-// res.redirect("/");
-//     }
-// })
-
-// });
-/* post login page. */
-router.post("/submit", formVarify, function (req, res, next) {
   logsuccess = true;
-  console.log("token approved");
-  res.redirect("/");
-});
-function formVarify(req, res, next) {
- 
+  
+ console.log( req.sessionID+"user sid");
+  
   dbhelp.doLogin(req.body).then((response) => {
-    console.log(response.status + "status error");
-    if (response.status) {
-      req.session.loggedIn = true;
-      req.session.userid = req.body.UserName;
-      next();
-    } else {
-      console.log("token not approved");
-      req.session.loginErr = true;
-      res.redirect("/login");
-    }
-  });
-}
+    console.log("thenhere")
+  if(response.status){
+    console.log("then here" + response.user)
+    req.session.user = response.user
+    req.session.loggedIn = true;
+    req.session.userid = req.body.UserName
+    req.session.bstatus=response.user.bstatus
+    res.redirect("/");
+  } else {
+    res.render("loginpage", {err:response.err})
+  }
+ 
+  })
+  
+});
+
 
 /* Get login page. */
-router.get("/login", varifyuser, function (req, res, next) {
+router.get("/login", function (req, res, next) {
   res.header(
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
   );
-
-  res.render("loginpage", {
-    LoginErr: req.session.loginErr,
-    logout: signOut,
-  });
-  console.log("loginerrorbfor" + req.session.loginErr);
-  req.session.loginErr = false;
-  console.log("loginerrorafter" + req.session.loginErr);
-  signOut = false;
-  console.log(req.session.signupedin + "req.session.signupedin");
+  if (req.session.loggedIn) {
+    res.redirect("/");
+  } else {
+    res.render("loginpage")
+  }  
 });
 
-function varifyuser(req, res, next) {
+
+/* get signup page. */
+router.get("/signuppage", (req, res, next) => {
+  res.header(
+    "Cache-Control",
+    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+  );
   if (!req.session.loggedIn && !req.session.signupedin) {
-    next();
+    cperr=req.session.cpwerr
+    res.render("signuppage", { Userexisterr,cperr});
+    Userexisterr = false;
+    req.session.cpwerr=false;
   } else {
     res.redirect("/");
   }
-}
-
-/* get signup page. */
-router.get("/signuppage", varifyuser, (req, res, next) => {
-  res.header(
-    "Cache-Control",
-    "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
-  );
- var pwerr1=req.session.cpwerr
-  console.log(pwerr1+ "cpwerr");
-  res.render("signuppage", { Userexisterr ,pwerr1});
-  Userexisterr = false;
-  req.session.cpwerr=false;
+ 
 });
 
 /*POST signup page. */
 router.post("/signup", (req, res, next) => {
-  req.session.userid = req.body.UserName;
- console.log(req.body.pw);
- console.log(req.body.cpw);
-  if (req.body.pw===req.body.cpw){
-
+ 
+  if (req.body.pw === req.body.cpw) {
     dbhelp.signUp(req.body).then((response) => {
-      if (response.Userexist) {
-        Userexisterr = response.Userexist;
-  
-        res.redirect("/signuppage");
+      if (!response?.err?.status) {
+        req.session.userid=response
+        req.session.loggedIn = true;
+        
+        req.session.signupedin=true
+        res.redirect("/login");
       } else {
-        req.session.signupedin = true;
-        res.redirect("/");
+        
+      res.render("users/signup", {err:response.err})
       }
     });
-    }else{
-      cpwerr=true
-      req.session.cpwerr=cpwerr
-      
-      res.redirect("/signuppage");
-    }
-    
-  
+  } else {
+    cpwerr = true;
+    req.session.cpwerr = cpwerr;
 
+    res.redirect("/signuppage");
+  }
 });
 
 /* get logout page. */
@@ -143,61 +126,6 @@ router.get("/logout", function (req, res, next) {
   res.redirect("/login");
 });
 
-// /* get list page. */
-// router.get("/list", verifyLogin, function (req, res, next) {
-//   const persons = {
-//     firstName: "John",
-//     lastName: "Doe",
-//     age: 50,
-//     eyeColor: "blue",
-//   };
-//   res.render("list", { persons, user });
-// });
-
-// /* get card page. */
-// router.get("/card", verifyLogin, function (req, res, next) {
-//   const personsarr = {
-//     person1: {
-//       img: "/images/batman.jpg",
-//       name: "Dark Knigth",
-//       sname: "Batman",
-//       year: 2008,
-//       color: "black",
-//     },
-//     person2: {
-//       img: "/images/inception.jpg",
-//       name: "Chris",
-//       sname: "Nolan",
-//       year: 2010,
-//       color: "red",
-//     },
-//     person3: {
-//       img: "/images/tenet.jpg",
-//       name: "Tenet",
-//       sname: "Doe",
-//       year: 2020,
-//       color: "blue",
-//     },
-//   };
-
-//   res.render("card", { personsarr, user });
-// });
-// /* get table page. */
-// router.get("/table", verifyLogin, function (req, res, next) {
-//   const personsarr = [
-//     {
-//       firstName: "Dark Knight",
-//       lastName: "Batman",
-//       age: 2008,
-//       eyeColor: "black",
-//     },
-//     { firstName: "Chris", lastName: "Nolan", age: 2010, eyeColor: "red" },
-//     { firstName: "Tenet", lastName: "Doe", age: 2020, eyeColor: "green" },
-//   ];
-
-//   res.render("table", { personsarr, user });
-// });
 
 
 module.exports = router;
-

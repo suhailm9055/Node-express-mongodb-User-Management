@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'key1', key: 'admin', cookie: { path: '/admim', maxAge: 6000000000000000000000000000000 } }))
+app.use(session({ secret: 'key1', key: 'admin', cookie: { path: '/admin', maxAge: 6000000000000000000000000000000 } }))
 app.use(session({ secret: 'key2', key: 'user', cookie: { path: '/', maxAge: 6000000000000000000000000000000 } }))
 db.connect((err)=>{
 if(err){

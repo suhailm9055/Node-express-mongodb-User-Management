@@ -2,17 +2,23 @@ var express = require("express");
 var router = express.Router();
 const { response } = require("express");
 var dbhelp = require("../DBhelper/signuphelper");
-
+var db = require("../config/connection");
+const { ObjectID } = require("mongodb");
 var adminsignOut = false;
 var adminlogsuccess = false;
 var updateuser = false;
 /* GET home page. */
+
 router.get("/", verifyLogin, function (req, res, next) {
   admin = req.session.adminid;
-  res.render("admin/Homepage", { admin, adminlogsuccess });
-  adminlogsuccess = false;
+  dbhelp.getAllUsers().then((users) => {
+    updateuser = req.session.usernameup;
+    res.render("admin/table", { users, updateuser });
+  });
+  updateuser = false;
 });
 function verifyLogin(req, res, next) {
+
   res.header(
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
@@ -133,13 +139,32 @@ router.post("/adduser", verifyLogin, function (req, res, next) {
       res.redirect("/admin/adduser");
     });
 });
-router.get("/deleteuser/:id", (req, res, next) => {
+router.get("/deleteuser/:id",verifyLogin, (req, res, next) => {
   let userId = req.params.id;
   console.log(userId + "user id delete");
   dbhelp.deleteUser(userId).then((response) => {
     res.redirect("/admin/users");
   });
 });
+router.get("/blockuser/:id",verifyLogin, (req, res, next) => {
+  let userId = req.params.id;
 
+  res.clearCookie('user', { path: '/' });
+  
+  console.log(userId + "user id delete");
+  dbhelp.blockUser(userId).then((response) => {
+    dbhelp.logout(userId).then((response)=>{
+      res.redirect("/admin/users");
+    })
+    
+  });
+});
+router.get("/unblockuser/:id",verifyLogin, (req, res, next) => {
+  let userId = req.params.id;
+  console.log(userId + "user id delete");
+  dbhelp.unblockUser(userId).then((response) => {
+    res.redirect("/admin/users");
+  });
+});
 
 module.exports = router;
