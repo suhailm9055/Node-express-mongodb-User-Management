@@ -5,6 +5,8 @@ var logsuccess = false;
 var Userexisterr = false;
 var cpwerr = false;
 
+var db = require("../config/connection");
+
 const { ObjectId } = require("mongodb");
 var dbhelp = require("../DBhelper/signuphelper");
 
@@ -15,14 +17,21 @@ async function verifyLogin(req, res, next) {
     "Cache-Control",
     "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0");
 
+    let id =req.session?.user?._id;
+    user=await dbhelp.getUserDetails(id)
     if(req.session.loggedIn) {
-      
-        
+      if(!user.blocked){
           next()
-        
-    
+}else{
+
+req.session.loggedIn=false
+ res.redirect("/login")
 }
-else res.redirect("/login")
+}else{
+
+req.session.loggedIn=false
+ res.redirect("/login")
+}
 }
 /* GET home page. */
 router.get("/", verifyLogin, function (req, res, next) {
@@ -52,7 +61,7 @@ router.post("/login",  function (req, res, next) {
     req.session.user = response.user
     req.session.loggedIn = true;
     req.session.userid = req.body.UserName
-    req.session.bstatus=response.user.bstatus
+    req.session.blocked=response.user.blocked
     res.redirect("/");
   } else {
     res.render("loginpage", {err:response.err})
@@ -100,14 +109,16 @@ router.post("/signup", (req, res, next) => {
   if (req.body.pw === req.body.cpw) {
     dbhelp.signUp(req.body).then((response) => {
       if (!response?.err?.status) {
-        req.session.userid=response
+        
+        req.session.user=response
+        req.session.userid=response.UserName
         req.session.loggedIn = true;
         
         req.session.signupedin=true
-        res.redirect("/login");
+        res.redirect("/");
       } else {
         
-      res.render("users/signup", {err:response.err})
+      res.render("signuppage", {err:response.err})
       }
     });
   } else {
@@ -122,6 +133,11 @@ router.post("/signup", (req, res, next) => {
 router.get("/logout", function (req, res, next) {
   req.session.loggedIn = false;
   req.session.signupedin = false;
+  db
+  .get()
+  .collection("users")
+  .updateOne({ UserName: req.session.userid },{$set:{loggedin:false}});
+  
   signOut = true;
   res.redirect("/login");
 });

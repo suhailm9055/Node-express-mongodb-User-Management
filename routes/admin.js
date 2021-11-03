@@ -148,15 +148,14 @@ router.get("/deleteuser/:id",verifyLogin, (req, res, next) => {
 });
 router.get("/blockuser/:id",verifyLogin, (req, res, next) => {
   let userId = req.params.id;
-
-  res.clearCookie('user', { path: '/' });
-  
-  console.log(userId + "user id delete");
   dbhelp.blockUser(userId).then((response) => {
     dbhelp.logout(userId).then((response)=>{
       res.redirect("/admin/users");
     })
     
+ 
+  
+ 
   });
 });
 router.get("/unblockuser/:id",verifyLogin, (req, res, next) => {
